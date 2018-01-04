@@ -1,1 +1,0 @@
-const test = require('something');
