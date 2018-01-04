@@ -31,5 +31,3 @@ coverage
 .npm
 .node_repl_history
 
-.lib
-lib/
