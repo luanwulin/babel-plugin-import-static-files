@@ -4,6 +4,7 @@
   "description": "Transforms static files import and copy files to /static folder for next.js applications.",
   "main": "lib/index.js",
   "scripts": {
+    "postinstall": "npm run build",
     "build": "cross-env NODE_ENV=production babel src --out-dir lib",
     "clean": "rimraf lib coverage .nyc_output",
     "coverage": "cross-env NODE_ENV=test nyc report --reporter=lcov",

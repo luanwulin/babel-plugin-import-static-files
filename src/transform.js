@@ -22,8 +22,8 @@ function getFile(state, absPath, opts) {
     }
 
     if (opts.baseDir) {
-        file = path.sep + path.join(opts.baseDir, file).replace(/^[\/\\]+/, '')
-        fs.copySync(absPath, path.join(root, file))
+        let copyPath = path.sep + path.join(opts.baseDir, file).replace(/^[\/\\]+/, '')
+        fs.copySync(absPath, path.join(root, copyPath))
     }
 
     return '/' + file
