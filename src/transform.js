@@ -1,28 +1,22 @@
 import crypto from 'crypto'
 import fs from 'fs-extra';
 import path from 'path';
+import urljoin from 'url-join';
 
 function getHash(str) {
     return crypto
-        .createHash('md5')
+        .createHash('sha1')
         .update(str, 'utf8')
-        .digest('hex');
+        .digest('hex')
+        .slice(0, 8);
 }
 
 function getFile(state, absPath, opts) {
-    const root = state.file.opts.sourceRoot || process.cwd()
-    let file
-
-    if (opts.hash === true) {
-        const content = fs.readFileSync(absPath, 'utf8')
-        const ext = path.extname(absPath)
-        file = path.basename(absPath, ext) + '-' + getHash(content) + ext
-    } else {
-        file = path.sep + absPath.substr(root.length).replace(/^[\/\\]+/, '')
-    }
+    const root = (opts.replaceExtendDir ? path.join(state.file.opts.sourceRoot, opts.replaceExtendDir) : state.file.opts.sourceRoot) || process.cwd();
+    let file = absPath.replace(root, '');
 
     if (opts.baseDir) {
-        let copyPath = path.sep + path.join(opts.baseDir, file).replace(/^[\/\\]+/, '')
+        let copyPath = path.join(opts.baseDir, file);
         fs.copySync(absPath, path.join(root, copyPath))
     }
 
@@ -44,8 +38,14 @@ const getVariableName = (p) => {
 
 export default (p, t, state, opts, absPath, calleeName) => {
     const file = getFile(state, absPath, opts);
+    let hash = '';
 
-    const uri = path.join(opts.baseUri || '', file);
+    if (opts.hash === true) {
+        const content = fs.readFileSync(absPath, 'utf8').trim();
+        hash = '?' + getHash(content);
+    }
+
+    const uri = urljoin(opts.baseUri || '', file, hash);
 
     if (calleeName === 'require') {
         p.replaceWith(t.StringLiteral(uri));

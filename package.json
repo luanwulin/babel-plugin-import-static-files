@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-import-static-files",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Transforms static files import and copy files to /static folder for next.js applications.",
   "main": "lib/index.js",
   "scripts": {
@@ -46,6 +46,7 @@
     "rimraf": "^2.6.1"
   },
   "dependencies": {
-    "fs-extra": "^4.0.2"
+    "fs-extra": "^4.0.2",
+    "url-join": "^2.0.2"
   }
 }
