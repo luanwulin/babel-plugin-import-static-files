@@ -45,7 +45,7 @@ const getVariableName = (p) => {
 export default (p, t, state, opts, absPath, calleeName) => {
     const file = getFile(state, absPath, opts);
 
-    const uri = `${opts.baseUri || ''}${file}`;
+    const uri = path.join(opts.baseUri || '', file);
 
     if (calleeName === 'require') {
         p.replaceWith(t.StringLiteral(uri));
